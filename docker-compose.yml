@@ -1,0 +1,33 @@
+services:
+  # Dashboard interactif 3D (service principal) : http://localhost:8050
+  dashboard:
+    build:
+      context: ./movement3d
+      dockerfile: Dockerfile
+    image: nfl-movement3d
+    container_name: nfl-movement3d-dashboard
+    ports:
+      - "8050:8050"
+    environment:
+      DATA_DIR: /data
+      OUTPUT_DIR: /app/output
+      DASH_HOST: 0.0.0.0
+      DASH_PORT: 8050
+    volumes:
+      - ./data:/data:ro
+      - ./movement3d/output:/app/output
+
+  # Export one-shot (HTML + PNG + README) : docker compose run --rm render
+  render:
+    image: nfl-movement3d
+    build:
+      context: ./movement3d
+      dockerfile: Dockerfile
+    profiles: ["tools"]
+    environment:
+      DATA_DIR: /data
+      OUTPUT_DIR: /app/output
+    volumes:
+      - ./data:/data:ro
+      - ./movement3d/output:/app/output
+    command: ["python", "main.py"]

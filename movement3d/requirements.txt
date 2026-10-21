@@ -1,0 +1,8 @@
+﻿pandas
+numpy
+plotly
+matplotlib
+kaleido
+dash
+gunicorn
+pytest
